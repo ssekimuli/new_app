@@ -1,7 +1,7 @@
 
 import 'package:new_app/constants/storage_key.dart';
 import 'package:new_app/constants/storage_key.dart';
-import 'package:new_app/models/Headline.dart';
+import 'package:new_app/models/headline.dart';
 
 class NewsAppApi{
 
