@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'article_category_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -10,7 +12,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       backgroundColor: Colors.grey[100],
       body: Padding(
         padding: EdgeInsetsGeometry.all(20),
@@ -18,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            
+
             TextFormField(
               autofocus: true,
               decoration: InputDecoration(
@@ -34,7 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderSide: BorderSide.none,
                 )
               ),
-            )
+            ),
+            SizedBox(height: 20),
+            ArticleCategoryScreen()
           ],
         ),
       )
