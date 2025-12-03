@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'article_category_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,40 +9,81 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  bool isSearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      setState(() {
+        isSearching = _searchController.text.isNotEmpty;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
-      backgroundColor: Colors.grey[100],
-      body: Padding(
-        padding: EdgeInsetsGeometry.all(20),
-        child: Column(
-
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-
-            TextFormField(
-              autofocus: true,
-              decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search,
-                    size: 24,
+      appBar: AppBar(
+        title: const Text('Home'),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 12.0),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Search articles...',
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 12.0,
+                      horizontal: 16.0,
+                    ),
+                    prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                      borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey[100],
                   ),
-                // helperText: 'Search article',
-                  hintText: "Search articles...",
-                fillColor: Colors.grey[300],
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                )
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            ArticleCategoryScreen()
-          ],
+              const SizedBox(height: 20),
+              // Use Expanded to take remaining space
+              Expanded(
+                child: isSearching
+                    ? const Center(
+                  child: Text(
+                    'Searching...',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                )
+                    : const ArticleCategoryScreen(),
+              ),
+            ],
+          ),
         ),
-      )
+      ),
     );
   }
 }
