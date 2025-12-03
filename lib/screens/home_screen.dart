@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_app/widgets/search_results.dart';
 import 'article_category_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool isSearching = false;
+  final List _searchResults = [];
 
   @override
   void initState() {
@@ -44,7 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               const SizedBox(height: 12.0),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 2.0,
+                ),
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
@@ -57,11 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     prefixIcon: const Icon(Icons.search, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(24.0),
-                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(24.0),
-                      borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+                      borderSide: const BorderSide(
+                        color: Colors.blue,
+                        width: 2.0,
+                      ),
                     ),
                     filled: true,
                     fillColor: Colors.grey[100],
@@ -69,17 +80,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Use Expanded to take remaining space
-              Expanded(
-                child: isSearching
-                    ? const Center(
-                  child: Text(
-                    'Searching...',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
-                )
-                    : const ArticleCategoryScreen(),
-              ),
+              
+              // FIXED: Both options now have proper constraints
+              isSearching
+                  ? Expanded(
+                      child: SearchResults(title: _searchController.text),
+                    )
+                  : Expanded(child: ArticleCategoryScreen()),
             ],
           ),
         ),

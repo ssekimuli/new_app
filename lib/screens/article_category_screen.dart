@@ -81,24 +81,23 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
           // Center(child: Text('No articles available'))
           Expanded(
             child: _articles.isEmpty
-                ? Expanded(
-                    child: ArticleCard(
-                      title:'Watch: How Tim Davie addressed BBC controversies over the years',
-                      description:'The BBC\'s director general Tim Davie has resigned over Trump documentary edit.',
-                      source:'BBC News',
-                      publishedAt: '2024-06-25',
-                      imageUrl:'https://ichef.bbci.co.uk/news/1024/branded_news/4c76/live/2a1de0a0-bda5-11f0-ae46-bd64331f0fd4.jpg',
-                      category: 'No articles available',
-                    ),
-                  )
+                ? Expanded(child: Text('No articles available'))
                 : TabBarView(
                     controller: _tabController,
                     children: _articles.map((article) {
                       return ListView.builder(
                         itemCount: _articles.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(article['title'].toString()),
+                          return ArticleCard(
+                            title:
+                                'Watch: How Tim Davie addressed BBC controversies over the years',
+                            description:
+                                'The BBC\'s director general Tim Davie has resigned over Trump documentary edit.',
+                            source: 'BBC News',
+                            publishedAt: '2026-06-25',
+                            imageUrl:
+                                'https://ichef.bbci.co.uk/news/1024/branded_news/4c76/live/2a1de0a0-bda5-11f0-ae46-bd64331f0fd4.jpg',
+                            category: _currentCategory,
                           );
                         },
                       );
