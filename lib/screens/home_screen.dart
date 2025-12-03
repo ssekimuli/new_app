@@ -18,9 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedCountry = Countries.values.firstWhere(
-      (c) => c.alpha2 == 'US',
-    );
+    _selectedCountry = Countries.values.firstWhere((c) => c.alpha2 == 'US');
     _searchController.addListener(() {
       setState(() {
         isSearching = _searchController.text.isNotEmpty;
@@ -38,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('International News'),
+        title: const Text(
+          'International News',
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.white,
         elevation: 5,
         actions: [
@@ -63,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }).toList(),
             onChanged: (Country? value) {
-              
               if (value == null) return;
               setState(() {
                 _selectedCountry = value;
