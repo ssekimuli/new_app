@@ -12,7 +12,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool isSearching = false;
-  final List _searchResults = [];
 
   @override
   void initState() {
@@ -80,11 +79,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              
-              // FIXED: Both options now have proper constraints
+
               isSearching
                   ? Expanded(
-                      child: SearchResults(title: _searchController.text),
+                      child: SearchResults(searchQuery: _searchController.text),
                     )
                   : Expanded(child: ArticleCategoryScreen()),
             ],

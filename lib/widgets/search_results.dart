@@ -1,19 +1,34 @@
 import 'package:flutter/material.dart';
 
 class SearchResults extends StatelessWidget {
-  final String title;
+  final String searchQuery;
+  final List<String> results;
 
-  const SearchResults({super.key, required this.title});
+  const SearchResults({
+    super.key, 
+    required this.searchQuery,
+    this.results = const [],
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(title),
-        );
-      },
+    if (results.isNotEmpty) {
+      return ListView(
+        shrinkWrap: true,
+        children: results.map((result) {
+          return ListTile(
+            title: Text(result),
+            subtitle: Text('Searching for: $searchQuery'),
+            onTap: () {
+            },
+          );
+        }).toList(),
+      );
+    }
+    
+    // If no results, show empty state
+    return Center(
+      child: Text('No results found for "$searchQuery"'),
     );
   }
 }
