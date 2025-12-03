@@ -14,6 +14,7 @@ Future<void> main() async {
 
   // Store the value in the box
   appKeyBox.put('apiKey', StorageKeys.apiKey);
+
   runApp(const MyApp());
 }
 

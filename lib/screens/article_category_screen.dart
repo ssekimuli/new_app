@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_app/services/api_service.dart';
 import 'package:new_app/widgets/article_card.dart';
 
 class ArticleCategoryScreen extends StatefulWidget {
@@ -48,14 +49,13 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
   }
 
   Future<void> _fetchArticles(String category) async {
-    // Simulate fetching articles based on category
-    // await Future.delayed(const Duration(seconds: 1));
+    // Call the service function
+    final articles = await ApiService().getAllArticles(category);
+
+
     setState(() {
-      // _articles.clear();
-      // for (int i = 1; i <= 10; i++) {
-      // _articles = [];
-      // }
-      print('Fetching articles for category: $category');
+      _articles.clear();
+      _articles.addAll(articles);
     });
   }
 
@@ -77,8 +77,6 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
           ),
           const SizedBox(height: 20),
 
-          // TabBarView
-          // Center(child: Text('No articles available'))
           Expanded(
             child: _articles.isEmpty
                 ? Expanded(child: Text('No articles available'))
@@ -89,14 +87,12 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
                         itemCount: _articles.length,
                         itemBuilder: (context, index) {
                           return ArticleCard(
-                            title:
-                                'Watch: How Tim Davie addressed BBC controversies over the years',
-                            description:
-                                'The BBC\'s director general Tim Davie has resigned over Trump documentary edit.',
-                            source: 'BBC News',
-                            publishedAt: '2026-06-25',
-                            imageUrl:
-                                'https://ichef.bbci.co.uk/news/1024/branded_news/4c76/live/2a1de0a0-bda5-11f0-ae46-bd64331f0fd4.jpg',
+                            title: article['title'] ?? 'No Title',
+                            description:article['description'],
+                            source: article['source']['name'] ?? 'No source',
+                            publishedAt: article['publishedAt'],
+                            imageUrl:article['urlToImage'] ??
+                                'https://via.placeholder.com/150',
                             category: _currentCategory,
                           );
                         },
