@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:new_app/widgets/search_results.dart';
 import 'article_category_screen.dart';
+import 'package:country/country.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,10 +13,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool isSearching = false;
+  late Country _selectedCountry;
 
   @override
   void initState() {
     super.initState();
+    _selectedCountry = Countries.values.firstWhere(
+      (c) => c.alpha2 == 'US',
+    );
     _searchController.addListener(() {
       setState(() {
         isSearching = _searchController.text.isNotEmpty;
@@ -33,9 +38,40 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('International News'),
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 5,
+        actions: [
+          DropdownButton<Country>(
+            value: _selectedCountry,
+            underline: const SizedBox(),
+            icon: Container(),
+            items: Countries.values.map((country) {
+              return DropdownMenuItem<Country>(
+                value: country,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(country.flagEmoji),
+                      const SizedBox(width: 1),
+                      Text(country.alpha2.toUpperCase()),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+            onChanged: (Country? value) {
+              
+              if (value == null) return;
+              setState(() {
+                _selectedCountry = value;
+              });
+            },
+          ),
+          const SizedBox(width: 16),
+        ],
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
