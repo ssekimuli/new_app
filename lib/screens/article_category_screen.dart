@@ -52,7 +52,6 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
     // Call the service function
     final articles = await ApiService().getAllArticles(category);
 
-
     setState(() {
       _articles.clear();
       _articles.addAll(articles);
@@ -83,15 +82,20 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
                 : TabBarView(
                     controller: _tabController,
                     children: _articles.map((article) {
-                      return ListView.builder(
+                      return ListView.separated(
                         itemCount: _articles.length,
+                        padding: const EdgeInsets.all(8.0),
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 4),
                         itemBuilder: (context, index) {
                           return ArticleCard(
                             title: article['title'] ?? 'No Title',
-                            description:article['description'],
+                            description: article['description'],
                             source: article['source']['name'] ?? 'No source',
                             publishedAt: article['publishedAt'],
-                            imageUrl:article['urlToImage'] ??
+                            imageUrl:
+                                article['urlToImage'] ??
                                 'https://via.placeholder.com/150',
                             category: _currentCategory,
                           );

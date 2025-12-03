@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_app/utils/date_utils.dart' as app_date_utils;
 
 class ArticleCard extends StatelessWidget {
   final String title;
@@ -30,8 +31,8 @@ class ArticleCard extends StatelessWidget {
           // Image section
           ClipRRect(
             borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(12),
-              topRight: Radius.circular(12),
+              topLeft: Radius.circular(6),
+              topRight: Radius.circular(6),
             ),
             child: Image.network(
               imageUrl,
@@ -57,7 +58,7 @@ class ArticleCard extends StatelessWidget {
                     color: Colors.blue.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child:  Text(
+                  child: Text(
                     category,
                     style: TextStyle(
                       fontSize: 12,
@@ -70,7 +71,7 @@ class ArticleCard extends StatelessWidget {
                 const SizedBox(height: 12),
 
                 // Title
-                 Text(
+                Text(
                   title,
                   style: TextStyle(
                     fontSize: 18,
@@ -85,7 +86,7 @@ class ArticleCard extends StatelessWidget {
                 const SizedBox(height: 8),
 
                 // Subtitle/Description
-                 Text(
+                Text(
                   description,
                   style: TextStyle(
                     fontSize: 14,
@@ -103,8 +104,8 @@ class ArticleCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Source/Time
-                     Text(
-                      '$source • $publishedAt',
+                    Text(
+                      '$source • ${app_date_utils.DateUtils.formatPublishedDate(publishedAt)}',
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
 
