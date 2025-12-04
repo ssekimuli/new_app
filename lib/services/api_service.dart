@@ -54,7 +54,6 @@ class ApiService {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         final List<dynamic> articles = jsonResponse['articles'];
 
-        // Extract titles from articles and return as List<String>
         final List<String> titles = [];
         for (var article in articles) {
           if (article is Map<String, dynamic> && article['title'] != null) {

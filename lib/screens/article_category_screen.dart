@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_app/controllers/new_controller.dart';
+import 'package:new_app/models/articles.dart';
 import 'package:new_app/widgets/article_card.dart';
 
 class ArticleCategoryScreen extends StatefulWidget {
@@ -87,14 +88,8 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
                             const SizedBox(height: 4),
                         itemBuilder: (context, index) {
                           return ArticleCard(
-                            title: article['title'] ?? 'No Title',
-                            description: article['description'],
-                            source: article['source']['name'] ?? 'No source',
-                            publishedAt: article['publishedAt'],
-                            imageUrl:
-                                article['urlToImage'] ??
-                                'https://via.placeholder.com/150',
                             category: newdata.category.value,
+                            article: Articles.fromJson(newdata.articles[index]),
                           );
                         },
                       );
