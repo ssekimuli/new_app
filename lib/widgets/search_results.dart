@@ -132,7 +132,6 @@ class _SearchResultsState extends State<SearchResults> {
             trailing: const Icon(Icons.chevron_right, color: Colors.grey),
             visualDensity: const VisualDensity(vertical: -2),
             onTap: () {
-              // print('Fetched Articles getX2: $_results[index]');
               Navigator.push(
                 context,
                 MaterialPageRoute(
