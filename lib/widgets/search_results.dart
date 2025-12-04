@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:new_app/models/articles.dart';
 import 'package:new_app/services/api_service.dart';
+import 'package:new_app/widgets/article_details.dart';
 
 class SearchResults extends StatefulWidget {
   final String searchQuery;
@@ -124,14 +126,21 @@ class _SearchResultsState extends State<SearchResults> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(
-              _results[index] is String
-                  ? _results[index]
-                  : _results[index]['title'] ?? 'No title',
+              (_results[index] as Map<String, dynamic>)['title']?.toString() ??
+                  'No title',
             ),
             trailing: const Icon(Icons.chevron_right, color: Colors.grey),
             visualDensity: const VisualDensity(vertical: -2),
             onTap: () {
-              // Handle tap
+              // print('Fetched Articles getX2: $_results[index]');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ArticleDetails(
+                    article: Articles.fromJson(_results[index]),
+                  ),
+                ),
+              );
             },
           );
         },

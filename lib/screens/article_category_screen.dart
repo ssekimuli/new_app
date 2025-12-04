@@ -24,27 +24,20 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
     {'label': 'Technology', 'value': 'technology'},
   ];
 
-  late NewController newdata;
-
   late TabController _tabController;
-
-  // String currentCategory = 'general';
 
   @override
   void initState() {
     super.initState();
-    newdata = Get.put(NewController());
-    String currentCategory = newdata.category.value;
-
+    // Initialize TabController
     _tabController = TabController(length: _categories.length, vsync: this);
+
+    // Add tab change listener
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
-        setState(() {
-
-          currentCategory = _categories[_tabController.index]['value'];
-          newdata.updateCategory(currentCategory);
-
-        });
+        final newController = Get.find<NewController>();
+        final currentCategory = _categories[_tabController.index]['value'];
+        newController.updateCategory(currentCategory);
       }
     });
   }
@@ -52,52 +45,60 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
   @override
   void dispose() {
     _tabController.dispose();
-    Get.delete<NewController>();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _categories.length,
-      child: Column(
-        children: [
-          // TabBar
-          TabBar(
-            controller: _tabController,
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            indicatorPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-            isScrollable: true,
-            tabs: _categories
-                .map((category) => Tab(text: category['label']))
-                .toList(),
-          ),
-          const SizedBox(height: 20),
+    // Get the controller instance
+    final NewController newController = Get.put(NewController());
 
-          Expanded(
-            child: newdata.articles.isEmpty
-                ? const Center(child: Text('No articles available'))
-                : TabBarView(
-                    controller: _tabController,
-                    children: newdata.articles.map((article) {
-                      return ListView.separated(
-                        itemCount: newdata.articles.length,
-                        padding: const EdgeInsets.all(8.0),
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: 4),
-                        itemBuilder: (context, index) {
-                          return ArticleCard(
-                            category: newdata.category.value,
-                            article: Articles.fromJson(newdata.articles[index]),
-                          );
-                        },
-                      );
-                    }).toList(),
-                  ),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        // TabBar
+        TabBar(
+          controller: _tabController,
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          indicatorPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+          isScrollable: true,
+          tabs: _categories
+              .map((category) => Tab(text: category['label']))
+              .toList(),
+        ),
+        const SizedBox(height: 20),
+
+        // update the UI when articles change
+        Expanded(
+          child: Obx(() {
+            if (newController.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (newController.articles.isEmpty) {
+              return const Center(child: Text('No articles available'));
+            }
+
+            return TabBarView(
+              controller: _tabController,
+              children: _categories.map((category) {
+                return ListView.separated(
+                  itemCount: newController.articles.length,
+                  padding: const EdgeInsets.all(8.0),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 4),
+                  itemBuilder: (context, index) {
+                    return ArticleCard(
+                      category: newController.category.value,
+                      article: Articles.fromJson(newController.articles[index]),
+                    );
+                  },
+                );
+              }).toList(),
+            );
+          }),
+        ),
+      ],
     );
   }
 }

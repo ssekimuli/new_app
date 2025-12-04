@@ -1,5 +1,6 @@
 
 class StorageKeys {
-  static const String apiKey = '79c4522b43464f558f7c53fcf918ee42';
+  static const String apiKey = 'e24f7df621314612a556724ea412abfb';
   static const String appBox = 'appBox';
+  
 }

@@ -16,7 +16,7 @@ class ApiService {
       }
 
       final uri = Uri.parse('${NewsAppApi.allArticleApi}$category&apiKey=$key');
-      print('Fetched Articles getX2: $category');
+      
 
       final response = await http.get(uri);
 
@@ -54,13 +54,14 @@ class ApiService {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         final List<dynamic> articles = jsonResponse['articles'];
 
-        final List<String> titles = [];
-        for (var article in articles) {
-          if (article is Map<String, dynamic> && article['title'] != null) {
-            titles.add(article['title'].toString());
-          }
-        }
-        return titles;
+        // final List<String> titles = [];
+        // for (var article in articles) {
+        //   if (article is Map<String, dynamic> && article['title'] != null) {
+        //     titles.add(article['title'].toString());
+        //   }
+        // }
+        // return titles;
+        return articles;
       } else {
         throw Exception(
           'Failed to load search results. Status code: ${response.statusCode}',
