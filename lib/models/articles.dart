@@ -24,7 +24,7 @@ class Articles {
     required this.publishedAt,
     required this.url,
     required this.urlToImage,
-    this.category = 'general',
+    required this.category,
     required this.source,
 
   });
