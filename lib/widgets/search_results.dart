@@ -26,7 +26,7 @@ class _SearchResultsState extends State<SearchResults> {
   @override
   void didUpdateWidget(SearchResults oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
+
     if (widget.searchQuery != oldWidget.searchQuery) {
       _debouncedSearch();
     }
@@ -34,7 +34,7 @@ class _SearchResultsState extends State<SearchResults> {
 
   void _debouncedSearch() {
     _debounceTimer?.cancel();
-    
+
     if (widget.searchQuery.isEmpty) {
       setState(() {
         _results = [];
@@ -43,13 +43,22 @@ class _SearchResultsState extends State<SearchResults> {
       });
       return;
     }
-    
+
+      if (widget.searchQuery.length < 3) {
+      setState(() {
+        _results = [];
+        _isLoading = false;
+        _errorMessage = null;
+      });
+      return;
+    }
+
     // Set loading state
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
-    
+
     // Start new timer
     _debounceTimer = Timer(const Duration(milliseconds: 500), () {
       _performSearch();
@@ -57,7 +66,7 @@ class _SearchResultsState extends State<SearchResults> {
   }
 
   Future<void> _performSearch() async {
-    if (widget.searchQuery.isEmpty) return;
+    if (widget.searchQuery.isEmpty || widget.searchQuery.length < 3) return;
 
     try {
       final results = await ApiService().search(widget.searchQuery);
@@ -101,7 +110,7 @@ class _SearchResultsState extends State<SearchResults> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Text(
-            'Error: $_errorMessage',
+            'Wait a moment and try again',
             style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
         ),
@@ -109,16 +118,25 @@ class _SearchResultsState extends State<SearchResults> {
     }
 
     if (_results.isNotEmpty) {
-      return ListView.builder(
+      return ListView.separated(
         shrinkWrap: true,
         itemCount: _results.length,
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(_results[index]),
+            trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+            visualDensity: const VisualDensity(vertical: -2),
             onTap: () {
-              // Handle item tap
-              print('Selected: ${_results[index]}');
+              // Handle tap
             },
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const Divider(
+            height: 1,
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
           );
         },
       );
