@@ -38,10 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text(
           'International News',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        elevation: 5,
+        backgroundColor: const Color.fromARGB(255, 194, 49, 49),
+        elevation: 12,
         actions: [
           DropdownButton<Country>(
             value: _selectedCountry,
@@ -57,7 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Text(country.flagEmoji),
                       const SizedBox(width: 1),
-                      Text(country.alpha2.toUpperCase()),
+                      Text(country.alpha2.toUpperCase(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          )),
                     ],
                   ),
                 ),
@@ -73,14 +77,14 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(width: 16),
         ],
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 245, 244, 244),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
           child: Column(
             children: [
-              const SizedBox(height: 12.0),
               Container(
+                color: const Color.fromARGB(255, 194, 49, 49),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10.0,
                   vertical: 2.0,
@@ -94,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       vertical: 12.0,
                       horizontal: 16.0,
                     ),
+
                     prefixIcon: const Icon(Icons.search, color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(24.0),
@@ -110,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     filled: true,
-                    fillColor: Colors.grey[100],
+                    fillColor: const Color.fromARGB(255, 243, 241, 241),
                   ),
                 ),
               ),
@@ -120,7 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? Expanded(
                       child: SearchResults(searchQuery: _searchController.text),
                     )
-                  : Expanded(child: ArticleCategoryScreen()),
+                  : Expanded(
+                    child: ArticleCategoryScreen()),
             ],
           ),
         ),

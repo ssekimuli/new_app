@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:new_app/controllers/new_controller.dart';
 import 'package:new_app/models/articles.dart';
 import 'package:new_app/utils/date_utils.dart' as app_date_utils;
 import 'package:shimmer/shimmer.dart';
@@ -14,6 +18,14 @@ class ArticleDetails extends StatefulWidget {
 
 class _ArticleDetailsState extends State<ArticleDetails> {
   bool _isImageError = false;
+  late NewController articleController;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    articleController = Get.find<NewController>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +35,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          article.category.isNotEmpty 
-              ? article.category 
-              : 'Article Details',
-        ),
+        title: Obx(() => Text(articleController.category.value.toUpperCase())),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -75,7 +83,9 @@ class _ArticleDetailsState extends State<ArticleDetails> {
       aspectRatio: 16 / 9,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: article.urlToImage != null && article.urlToImage!.isNotEmpty && !_isImageError
+        child: article.urlToImage != null && 
+               article.urlToImage!.isNotEmpty && 
+               !_isImageError
             ? Image.network(
                 article.urlToImage!,
                 fit: BoxFit.cover,
@@ -105,38 +115,37 @@ class _ArticleDetailsState extends State<ArticleDetails> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Author and Source
-        if (article.author != null && article.author!.isNotEmpty)
+        if (article.author?.isNotEmpty == true)
           Text(
             'By ${article.author!}',
             style: textTheme.bodyMedium?.copyWith(
-              color: textTheme.bodyMedium?.color?.withOpacity(0.7),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
         
-        const SizedBox(height: 4),
+        if (article.author?.isNotEmpty == true) const SizedBox(height: 4),
         
-        // Source and Date
         Row(
           children: [
-            if (article.source != null && article.source!.isNotEmpty)
+            if (article.source?.isNotEmpty == true)
               Expanded(
                 child: Text(
                   'Source: ${article.source!}',
                   style: textTheme.bodySmall?.copyWith(
-                    color: textTheme.bodySmall?.color?.withOpacity(0.6),
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
             
-            const SizedBox(width: 8),
+            if (article.source?.isNotEmpty == true && article.publishedAt != null)
+              const SizedBox(width: 8),
             
             if (article.publishedAt != null)
               Text(
                 app_date_utils.DateUtils.formatPublishedDate(article.publishedAt),
                 style: textTheme.bodySmall?.copyWith(
-                  color: textTheme.bodySmall?.color?.withOpacity(0.6),
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                 ),
               ),
           ],
@@ -192,5 +201,4 @@ class _ArticleDetailsState extends State<ArticleDetails> {
       ),
     );
   }
-
 }

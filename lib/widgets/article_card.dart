@@ -16,7 +16,7 @@ class ArticleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onDoubleTap: () => {
+      onTap: () => {
         Navigator.push(
           context,
           MaterialPageRoute(

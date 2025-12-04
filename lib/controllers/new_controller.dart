@@ -9,7 +9,7 @@ class NewController extends GetxController {
   final RxList<dynamic> articles = <dynamic>[].obs;
   final RxBool isLoading = true.obs;
   final RxString errorMessage = ''.obs;
-  final RxString category = 'general'.obs;
+  final RxString category = ''.obs;
   final Rx<Country> country = Countries.values
       .firstWhere((c) => c.alpha2 == 'US')
       .obs;
@@ -22,6 +22,7 @@ class NewController extends GetxController {
   }
 
   void initializeController() {
+    category.value = 'general';
     fetchArticles(category.value);
   }
 
@@ -32,11 +33,10 @@ class NewController extends GetxController {
 
   Future<void> fetchArticles(String category) async {
     try {
-
       isLoading.value = true;
-      
+
       final fetchedArticles = await _apiService.getAllArticles(category);
-      
+
       articles.value = fetchedArticles;
     } catch (e) {
       errorMessage.value = e.toString();

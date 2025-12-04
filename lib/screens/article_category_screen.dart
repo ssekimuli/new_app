@@ -56,16 +56,19 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
     return Column(
       children: [
         // TabBar
-        TabBar(
-          controller: _tabController,
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          indicatorPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-          isScrollable: true,
-          tabs: _categories
-              .map((category) => Tab(text: category['label']))
-              .toList(),
+        Container(
+          color: const Color.fromARGB(255, 206, 203, 203),
+          child: TabBar(
+            controller: _tabController,
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            indicatorPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+            isScrollable: true,
+            tabs: _categories
+                .map((category) => Tab(text: category['label']))
+                .toList(),
+          ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 5),
 
         // update the UI when articles change
         Expanded(

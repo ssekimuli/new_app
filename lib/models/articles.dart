@@ -39,7 +39,7 @@ class Articles {
       publishedAt: json['publishedAt'] ?? '',
       url: json['url'] ?? '',
       urlToImage: json['urlToImage'] ?? '',
-      category: json['category'] ?? 'general',
+      category: json['category'] ?? '',
       source: json['source']['name'] ?? 'Unknown',
     );
   }
