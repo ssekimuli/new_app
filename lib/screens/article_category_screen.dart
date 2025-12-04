@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:new_app/services/api_service.dart';
+import 'package:get/get.dart';
+import 'package:new_app/controllers/new_controller.dart';
 import 'package:new_app/widgets/article_card.dart';
 
 class ArticleCategoryScreen extends StatefulWidget {
@@ -22,40 +23,36 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
     {'label': 'Technology', 'value': 'technology'},
   ];
 
-  final List _articles = [];
-  String _currentCategory = 'general';
+  late NewController newdata;
 
   late TabController _tabController;
+
+  // String currentCategory = 'general';
 
   @override
   void initState() {
     super.initState();
+    newdata = Get.put(NewController());
+    String currentCategory = newdata.category.value;
+
     _tabController = TabController(length: _categories.length, vsync: this);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         setState(() {
-          _currentCategory = _categories[_tabController.index]['value'];
-          _fetchArticles(_currentCategory);
+
+          currentCategory = _categories[_tabController.index]['value'];
+          newdata.updateCategory(currentCategory);
+
         });
       }
     });
-    _fetchArticles(_currentCategory);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    Get.delete<NewController>();
     super.dispose();
-  }
-
-  Future<void> _fetchArticles(String category) async {
-    // Call the service function
-    final articles = await ApiService().getAllArticles(category);
-
-    setState(() {
-      _articles.clear();
-      _articles.addAll(articles);
-    });
   }
 
   @override
@@ -77,13 +74,13 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
           const SizedBox(height: 20),
 
           Expanded(
-            child: _articles.isEmpty
-                ? Expanded(child: Text('No articles available'))
+            child: newdata.articles.isEmpty
+                ? const Center(child: Text('No articles available'))
                 : TabBarView(
                     controller: _tabController,
-                    children: _articles.map((article) {
+                    children: newdata.articles.map((article) {
                       return ListView.separated(
-                        itemCount: _articles.length,
+                        itemCount: newdata.articles.length,
                         padding: const EdgeInsets.all(8.0),
                         physics: const AlwaysScrollableScrollPhysics(),
                         separatorBuilder: (context, index) =>
@@ -97,7 +94,7 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
                             imageUrl:
                                 article['urlToImage'] ??
                                 'https://via.placeholder.com/150',
-                            category: _currentCategory,
+                            category: newdata.category.value,
                           );
                         },
                       );

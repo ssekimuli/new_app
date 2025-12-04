@@ -12,7 +12,7 @@ class SearchResults extends StatefulWidget {
 }
 
 class _SearchResultsState extends State<SearchResults> {
-  List<String> _results = [];
+  List<dynamic> _results = [];
   bool _isLoading = false;
   String? _errorMessage;
   Timer? _debounceTimer;
@@ -44,7 +44,7 @@ class _SearchResultsState extends State<SearchResults> {
       return;
     }
 
-      if (widget.searchQuery.length < 3) {
+    if (widget.searchQuery.length < 3) {
       setState(() {
         _results = [];
         _isLoading = false;
@@ -123,7 +123,11 @@ class _SearchResultsState extends State<SearchResults> {
         itemCount: _results.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(_results[index]),
+            title: Text(
+              _results[index] is String
+                  ? _results[index]
+                  : _results[index]['title'] ?? 'No title',
+            ),
             trailing: const Icon(Icons.chevron_right, color: Colors.grey),
             visualDensity: const VisualDensity(vertical: -2),
             onTap: () {

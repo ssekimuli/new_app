@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:new_app/constants/news_app_api.dart';
 
 class ApiService {
+  get url => null;
+
   Future<List<dynamic>> getAllArticles(String category) async {
     try {
       final appKeyBox = await Hive.openBox('appKey');
@@ -14,14 +16,13 @@ class ApiService {
       }
 
       final uri = Uri.parse('${NewsAppApi.allArticleApi}$category&apiKey=$key');
+      print('Fetched Articles getX2: $category');
 
-      // Make the HTTP request
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
 
-        // Extract the articles array from the response
         final List<dynamic> articles = jsonResponse['articles'];
         return articles;
       } else {
@@ -34,7 +35,7 @@ class ApiService {
     }
   }
 
-  Future<List<String>> search(String searchQuery) async {
+  Future<List<dynamic>> search(String searchQuery) async {
     try {
       final appKeyBox = await Hive.openBox('appKey');
       final key = appKeyBox.get('apiKey');
@@ -46,8 +47,6 @@ class ApiService {
       final uri = Uri.parse(
         '${NewsAppApi.allArticleApi}$searchQuery&apiKey=$key',
       );
-
-      print('Request URL: $uri');
 
       final response = await http.get(uri);
 
