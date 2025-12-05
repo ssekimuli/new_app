@@ -125,11 +125,20 @@ class _SearchResultsState extends State<SearchResults> {
         itemCount: _results.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(
-              (_results[index] as Map<String, dynamic>)['title']?.toString() ??
-                  'No title',
+            title: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                (_results[index] as Map<String, dynamic>)['title']
+                        ?.toString() ??
+                    'No title',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  overflow: TextOverflow.ellipsis,
+                  fontSize: 16,
+                ),
+              ),
             ),
-            trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+            trailing: const Icon(Icons.search, color: Colors.grey),
             visualDensity: const VisualDensity(vertical: -2),
             onTap: () {
               Navigator.push(
@@ -145,10 +154,10 @@ class _SearchResultsState extends State<SearchResults> {
         },
         separatorBuilder: (context, index) {
           return const Divider(
-            height: 1,
-            thickness: 1,
-            indent: 16,
-            endIndent: 16,
+            height: 0.5,
+            thickness: 0.5,
+            indent: 20,
+            endIndent: 20,
           );
         },
       );

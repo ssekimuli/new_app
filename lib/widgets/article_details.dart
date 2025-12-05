@@ -23,7 +23,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
   @override
   void initState() {
     super.initState();
-    
+
     articleController = Get.find<NewController>();
   }
 
@@ -35,7 +35,16 @@ class _ArticleDetailsState extends State<ArticleDetails> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => Text(articleController.category.value.toUpperCase())),
+        title: Obx(
+          () => Text(
+            articleController.category.value.toUpperCase(),
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -44,9 +53,9 @@ class _ArticleDetailsState extends State<ArticleDetails> {
           children: [
             // Image Section
             _buildImageSection(article),
-            
+
             const SizedBox(height: 16),
-            
+
             // Title
             Text(
               article.title,
@@ -54,21 +63,19 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             // Article Metadata
             _buildArticleMetadata(context, article),
-            
+
             const SizedBox(height: 16),
-            
+
             // Content
             if (article.content != null && article.content!.isNotEmpty)
               Text(
                 article.content!,
-                style: textTheme.bodyLarge?.copyWith(
-                  height: 1.5,
-                ),
+                style: textTheme.bodyLarge?.copyWith(height: 1.5),
               )
             else
               _buildPlaceholderContent(),
@@ -83,9 +90,10 @@ class _ArticleDetailsState extends State<ArticleDetails> {
       aspectRatio: 16 / 9,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: article.urlToImage != null && 
-               article.urlToImage!.isNotEmpty && 
-               !_isImageError
+        child:
+            article.urlToImage != null &&
+                article.urlToImage!.isNotEmpty &&
+                !_isImageError
             ? Image.network(
                 article.urlToImage!,
                 fit: BoxFit.cover,
@@ -111,7 +119,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
 
   Widget _buildArticleMetadata(BuildContext context, Articles article) {
     final textTheme = Theme.of(context).textTheme;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -122,9 +130,9 @@ class _ArticleDetailsState extends State<ArticleDetails> {
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
             ),
           ),
-        
+
         if (article.author?.isNotEmpty == true) const SizedBox(height: 4),
-        
+
         Row(
           children: [
             if (article.source?.isNotEmpty == true)
@@ -132,20 +140,27 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                 child: Text(
                   'Source: ${article.source!}',
                   style: textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withOpacity(0.6),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-            
-            if (article.source?.isNotEmpty == true && article.publishedAt != null)
+
+            if (article.source?.isNotEmpty == true &&
+                article.publishedAt != null)
               const SizedBox(width: 8),
-            
+
             if (article.publishedAt != null)
               Text(
-                app_date_utils.DateUtils.formatPublishedDate(article.publishedAt),
+                app_date_utils.DateUtils.formatPublishedDate(
+                  article.publishedAt,
+                ),
                 style: textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.6),
                 ),
               ),
           ],
@@ -158,11 +173,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
     return Container(
       color: Colors.grey[200],
       child: const Center(
-        child: Icon(
-          Icons.image,
-          size: 60,
-          color: Colors.grey,
-        ),
+        child: Icon(Icons.image, size: 60, color: Colors.grey),
       ),
     );
   }
@@ -183,11 +194,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
-      child: Container(
-        height: 16,
-        width: width,
-        color: Colors.white,
-      ),
+      child: Container(height: 16, width: width, color: Colors.white),
     );
   }
 
@@ -196,9 +203,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       period: const Duration(milliseconds: 1500),
-      child: Container(
-        color: Colors.white,
-      ),
+      child: Container(color: Colors.white),
     );
   }
 }

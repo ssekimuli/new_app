@@ -44,11 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 12,
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20.0),
             child: DropdownButton<Country>(
               value: _selectedCountry,
               underline: const SizedBox(),
-              icon: Container(),
               items: Countries.values.map((country) {
                 return DropdownMenuItem<Country>(
                   value: country,
