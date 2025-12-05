@@ -113,26 +113,26 @@ class ArticleCard extends StatelessWidget {
                       ),
 
                       // Action button
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.play_arrow, size: 16),
-                            SizedBox(width: 4),
-                            Text('Watch'),
-                          ],
-                        ),
-                      ),
+                      // ElevatedButton(
+                      //   onPressed: () {},
+                      //   style: ElevatedButton.styleFrom(
+                      //     padding: const EdgeInsets.symmetric(
+                      //       horizontal: 16,
+                      //       vertical: 8,
+                      //     ),
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(20),
+                      //     ),
+                      //   ),
+                      //   child: const Row(
+                      //     mainAxisSize: MainAxisSize.min,
+                      //     children: [
+                      //       Icon(Icons.play_arrow, size: 16),
+                      //       SizedBox(width: 4),
+                      //       Text('Watch'),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],

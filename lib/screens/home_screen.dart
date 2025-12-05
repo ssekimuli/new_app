@@ -43,36 +43,38 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: const Color.fromARGB(255, 194, 49, 49),
         elevation: 12,
         actions: [
-          DropdownButton<Country>(
-            value: _selectedCountry,
-            underline: const SizedBox(),
-            icon: Container(),
-            items: Countries.values.map((country) {
-              return DropdownMenuItem<Country>(
-                value: country,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownButton<Country>(
+              value: _selectedCountry,
+              underline: const SizedBox(),
+              icon: Container(),
+              items: Countries.values.map((country) {
+                return DropdownMenuItem<Country>(
+                  value: country,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(country.flagEmoji),
                       const SizedBox(width: 1),
-                      Text(country.alpha2.toUpperCase(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          )),
+                      Text(
+                        country.alpha2.toUpperCase(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              );
-            }).toList(),
-            onChanged: (Country? value) {
-              if (value == null) return;
-              setState(() {
-                _selectedCountry = value;
-              });
-            },
+                );
+              }).toList(),
+              onChanged: (Country? value) {
+                if (value == null) return;
+                setState(() {
+                  _selectedCountry = value;
+                });
+              },
+            ),
           ),
           const SizedBox(width: 16),
         ],
@@ -92,30 +94,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'Search articles...',
-                    hintStyle: const TextStyle(color: Colors.grey),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 16.0,
+                    fillColor: Colors.white,
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: const Color.fromARGB(
+                        255,
+                        153,
+                        1,
+                        1,
+                      ).withOpacity(0.64),
                     ),
-
-                    prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: const BorderSide(
-                        color: Colors.grey,
-                        width: 1.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24.0),
-                      borderSide: const BorderSide(
-                        color: Colors.blue,
-                        width: 2.0,
-                      ),
+                    hintText: "Search",
+                    hintStyle: TextStyle(
+                      color: const Color(0xFF1D1D35).withOpacity(0.64),
                     ),
                     filled: true,
-                    fillColor: const Color.fromARGB(255, 243, 241, 241),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0 * 1.5,
+                      vertical: 16.0,
+                    ),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    ),
                   ),
                 ),
               ),
@@ -125,8 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? Expanded(
                       child: SearchResults(searchQuery: _searchController.text),
                     )
-                  : Expanded(
-                    child: ArticleCategoryScreen()),
+                  : Expanded(child: ArticleCategoryScreen()),
             ],
           ),
         ),
