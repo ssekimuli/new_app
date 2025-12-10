@@ -14,7 +14,7 @@ class SearchResults extends StatefulWidget {
 }
 
 class _SearchResultsState extends State<SearchResults> {
-  List<dynamic> _results = [];
+  List<Article> _results = [];
   bool _isLoading = false;
   String? _errorMessage;
   Timer? _debounceTimer;
@@ -124,19 +124,18 @@ class _SearchResultsState extends State<SearchResults> {
         shrinkWrap: true,
         itemCount: _results.length,
         itemBuilder: (context, index) {
+          final article = _results[index];
           return ListTile(
             title: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
-                (_results[index] as Map<String, dynamic>)['title']
-                        ?.toString() ??
-                    'No title',
+                _results[index].title,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   overflow: TextOverflow.ellipsis,
                   fontSize: 16,
                 ),
-              ),
+              )
             ),
             trailing: const Icon(Icons.search, color: Colors.grey),
             visualDensity: const VisualDensity(vertical: -2),
@@ -144,9 +143,7 @@ class _SearchResultsState extends State<SearchResults> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ArticleDetails(
-                    article: Article.fromJson(_results[index], 'search'),
-                  ),
+                  builder: (context) => ArticleDetails(article: article),
                 ),
               );
             },

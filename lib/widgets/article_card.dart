@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:new_app/models/articles.dart';
 import 'package:new_app/utils/date_utils.dart' as app_date_utils;
 import 'package:new_app/widgets/article_details.dart';
+import 'package:new_app/widgets/image_placeholder.dart';
 
 class ArticleCard extends StatelessWidget {
   final Article article;
@@ -60,16 +61,7 @@ class ArticleCard extends StatelessWidget {
                       height: 180,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey[200],
-                          child: const Center(
-                            child: Icon(
-                              Icons.article,
-                              color: Colors.grey,
-                              size: 60,
-                            ),
-                          ),
-                        );
+                        return ImagePlaceholder();
                       },
                     ),
             ),

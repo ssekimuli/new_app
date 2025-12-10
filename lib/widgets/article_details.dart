@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:new_app/controllers/new_controller.dart';
 import 'package:new_app/models/articles.dart';
 import 'package:new_app/utils/date_utils.dart' as app_date_utils;
+import 'package:new_app/widgets/image_placeholder.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ArticleDetails extends StatefulWidget {
@@ -109,10 +110,10 @@ class _ArticleDetailsState extends State<ArticleDetails> {
                       });
                     }
                   });
-                  return _buildImagePlaceholder();
+                  return ImagePlaceholder();
                 },
               )
-            : _buildImagePlaceholder(),
+            : ImagePlaceholder(),
       ),
     );
   }
@@ -169,14 +170,6 @@ class _ArticleDetailsState extends State<ArticleDetails> {
     );
   }
 
-  Widget _buildImagePlaceholder() {
-    return Container(
-      color: Colors.grey[200],
-      child: const Center(
-        child: Icon(Icons.image, size: 60, color: Colors.grey),
-      ),
-    );
-  }
 
   Widget _buildPlaceholderContent() {
     return Column(
