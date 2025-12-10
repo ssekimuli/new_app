@@ -25,6 +25,7 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
   ];
 
   late TabController _tabController;
+  int _previousTabIndex = 0;
 
   @override
   void initState() {
@@ -34,10 +35,12 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
 
     // Add tab change listener
     _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
+      // This handles both tapping and swiping
+      if (_tabController.index != _previousTabIndex) {
         final newController = Get.find<NewController>();
         final currentCategory = _categories[_tabController.index]['value'];
         newController.updateCategory(currentCategory);
+        _previousTabIndex = _tabController.index;
       }
     });
   }
