@@ -5,16 +5,12 @@ import 'package:new_app/models/articles.dart';
 import 'package:new_app/services/hive_service.dart';
 
 class ApiService {
-  
   Future<List<Article>> getAllArticles(String category) async {
-    
-    
     try {
       // Check cache first (1 hour expiry)
       if (!HiveService.shouldRefreshCache(category)) {
         final cachedArticles = HiveService.getArticlesForCategory(category);
         if (cachedArticles.isNotEmpty) {
-
           return cachedArticles;
         }
       }
@@ -33,7 +29,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         final List<dynamic> articles = jsonResponse['articles'] ?? [];
-        
+
         if (articles.isEmpty) {
           // Return cached articles if available
           final cachedArticles = HiveService.getArticlesForCategory(category);
@@ -46,33 +42,28 @@ class ApiService {
             .map((articleJson) => Article.fromJson(articleJson, category))
             .toList();
 
-        
         // Save to cache
         HiveService.saveArticlesForCategory(category, articleList);
 
         return articleList;
       } else {
-
         // If API fails, return cached data if available
         final cachedArticles = HiveService.getArticlesForCategory(category);
         if (cachedArticles.isNotEmpty) {
-
           return cachedArticles;
         }
-        
+
         throw Exception(
           'Failed to load articles. Status code: ${response.statusCode}',
         );
       }
     } catch (e) {
-      
-      
       // If any error occurs, try to return cached data
       final cachedArticles = HiveService.getArticlesForCategory(category);
       if (cachedArticles.isNotEmpty) {
         return cachedArticles;
       }
-      
+
       rethrow;
     }
   }
@@ -90,18 +81,16 @@ class ApiService {
         '${NewsAppApi.allArticleApi}$searchQuery&apiKey=$key',
       );
 
-
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         final List<dynamic> articles = jsonResponse['articles'] ?? [];
-        
-        
+
         // Convert to Article models with 'search' as category
         return articles
             .where((article) => article['title'] != null)
-            .map((articleJson) => Article.fromJson(articleJson, 'search'))
+            .map((articleJson) => Article.fromJson(articleJson, 'general'))
             .toList();
       } else {
         throw Exception(
@@ -109,7 +98,7 @@ class ApiService {
         );
       }
     } catch (e) {
-      print('❌ Error in search for "$searchQuery": $e');
+
       rethrow;
     }
   }

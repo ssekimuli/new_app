@@ -1,7 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:new_app/constants/storage_key.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:new_app/models/articles.dart';
 import 'package:new_app/models/category.dart';
 
@@ -66,14 +65,12 @@ class HiveService {
     
     try {
       await Hive.openBox<Category>(categoriesBox);
-      print('  ✅ $categoriesBox opened as Box<Category>');
     } catch (e) {
       print('  ⚠️  Error opening $categoriesBox: $e');
     }
     
     try {
       await Hive.openBox<DateTime>(cacheTimestampBox);
-      print('  ✅ $cacheTimestampBox opened as Box<DateTime>');
     } catch (e) {
       print('  ⚠️  Error opening $cacheTimestampBox: $e');
     }
@@ -97,7 +94,6 @@ class HiveService {
   static void saveApiKey(String apiKey) {
     final box = _getBox<String>(apiKeyBox);
     box.put('apiKey', apiKey);
-    print('🔑 API Key updated in Hive');
   }
 
   static String? getApiKey() {
@@ -106,13 +102,11 @@ class HiveService {
       final apiKey = box.get('apiKey');
       
       if (apiKey == null || apiKey.isEmpty) {
-        print('⚠️  Warning: API Key not found in Hive');
         return null;
       }
       
       return apiKey;
     } catch (e) {
-      print('❌ Error getting API key: $e');
       return null;
     }
   }
@@ -155,7 +149,6 @@ class HiveService {
     // Update cache timestamp
     _updateCacheTimestamp(category);
     
-    print('💾 Saved ${articles.length} articles for category: $category');
   }
 
   static void _updateCacheTimestamp(String category) {
@@ -169,7 +162,6 @@ class HiveService {
         .where((article) => article.category == category)
         .toList();
     
-    print('📚 Retrieved ${articles.length} cached articles for category: $category');
     return articles;
   }
 
@@ -181,18 +173,13 @@ class HiveService {
   static bool shouldRefreshCache(String category, {Duration maxAge = const Duration(hours: 1)}) {
     final lastFetch = getLastFetchTime(category);
     if (lastFetch == null) {
-      print('🔄 No cache found for category: $category - should refresh');
       return true;
     }
-    
+  
     final now = DateTime.now();
     final shouldRefresh = now.difference(lastFetch) > maxAge;
     
-    if (shouldRefresh) {
-      print('🔄 Cache expired for category: $category. Last fetched: $lastFetch');
-    } else {
-      print('💾 Using cached data for category: $category. Last fetched: $lastFetch');
-    }
+   
     
     return shouldRefresh;
   }
@@ -215,7 +202,6 @@ class HiveService {
     final timestampBox = _getBox<DateTime>(cacheTimestampBox);
     timestampBox.delete(category);
     
-    print('🗑️  Cleared cache for category: $category (${keysToDelete.length} articles)');
   }
 
   // Category Management
@@ -226,7 +212,6 @@ class HiveService {
   static List<Category> getCategories() {
     final box = getCategoriesBox();
     final categories = box.values.toList();
-    print('📁 Retrieved ${categories.length} categories from cache');
     return categories;
   }
 
@@ -241,22 +226,13 @@ class HiveService {
     print('📁 Saved ${categories.length} categories to cache');
   }
 
-  // Utility Methods
-  static void checkHiveStatus() {
-    print('🔍 Hive Status Check:');
-    print('  - Is initialized: $_isInitialized');
-    print('  - Is $apiKeyBox open: ${Hive.isBoxOpen(apiKeyBox)}');
-    print('  - Is $articlesBox open: ${Hive.isBoxOpen(articlesBox)}');
-    print('  - Is $categoriesBox open: ${Hive.isBoxOpen(categoriesBox)}');
-    print('  - Is $cacheTimestampBox open: ${Hive.isBoxOpen(cacheTimestampBox)}');
-  }
+  
 
   // Close all boxes
   static Future<void> closeAllBoxes() async {
     try {
       await Hive.close();
       _isInitialized = false;
-      print('🔒 All Hive boxes closed');
     } catch (e) {
       print('❌ Error closing Hive boxes: $e');
     }
