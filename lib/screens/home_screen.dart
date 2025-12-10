@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:new_app/widgets/search_results.dart';
 import 'article_category_screen.dart';
 import 'package:country/country.dart';
@@ -102,6 +103,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: TextField(
                   controller: _searchController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r"[a-zA-Z\s']"))
+
+                  ],
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,
