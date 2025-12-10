@@ -9,8 +9,6 @@ Future<void> main() async {
 
   try {
     await HiveService.init();
-    HiveService.checkHiveStatus(); // Check status
-    print('Hive initialization completed successfully');
   } catch (e) {
     print('Error initializing Hive: $e');
   }

@@ -110,7 +110,7 @@ class NewController extends GetxController {
       // Clear error if successful
       errorMessage.value = '';
     } catch (e) {
-      errorMessage.value = 'Failed to fetch articles: $e';
+      errorMessage.value = 'Failed to fetch articles: ${e.toString()}';
 
       // If error, check if we have cached data
       if (articles.isEmpty) {
@@ -155,7 +155,7 @@ class NewController extends GetxController {
 
       articles.value = searchResults;
     } catch (e) {
-      errorMessage.value = 'Search failed: $e';
+      errorMessage.value = 'Failed to fetch articles: ${e.toString()}';
 
       Get.snackbar(
         'Search Error',
