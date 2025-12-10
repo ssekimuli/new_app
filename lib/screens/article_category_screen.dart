@@ -100,28 +100,6 @@ class _ArticleCategoryScreenState extends State<ArticleCategoryScreen>
                     isPortrait,
                     newController,
                   ),
-                  // child:  Scrollbar(
-                  //   thumbVisibility: true,
-                  //   trackVisibility: true,
-                  //   thickness: 4,
-                  //   radius: const Radius.circular(3),
-                  //   interactive: true,
-                  //   child: ListView.separated(
-                  //     itemCount: newController.articles.length,
-                  //     padding: const EdgeInsets.all(8.0),
-                  //     physics: const AlwaysScrollableScrollPhysics(),
-                  //     separatorBuilder: (context, index) =>
-                  //         const SizedBox(height: 4),
-                  //     itemBuilder: (context, index) {
-                  //       return ArticleCard(
-                  //         category: newController.category.value,
-                  //         article: Articles.fromJson(
-                  //           newController.articles[index],
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
                 );
               }).toList(),
             );
@@ -173,40 +151,50 @@ Widget _buildListView(BuildContext context, NewController controller) {
     interactive: true,
     child: ListView.separated(
       itemCount: controller.articles.length,
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(4.0),
       physics: const AlwaysScrollableScrollPhysics(),
       separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
-        
         return ArticleCard(
           category: controller.category.value,
-          article: Articles.fromJson(controller.articles[index]), isCompact: false,
+          article: Articles.fromJson(controller.articles[index]),
+          isCompact: false,
         );
       },
     ),
   );
 }
 
-Widget _buildGridView(BuildContext context, int columns, NewController controller) {
-  return GridView.builder(
-    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: columns,
-      crossAxisSpacing: 8,
-      mainAxisSpacing: 8,
-      mainAxisExtent: 320, // SIMPLE FIXED HEIGHT
+Widget _buildGridView(
+  BuildContext context,
+  int columns,
+  NewController controller,
+) {
+  return Scrollbar(
+    thumbVisibility: true,
+    trackVisibility: true,
+    thickness: 4,
+    radius: const Radius.circular(3),
+    interactive: true,
+    child: GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: columns,
+        crossAxisSpacing: 2,
+        mainAxisSpacing: 2,
+        mainAxisExtent: 320,
+      ),
+      itemCount: controller.articles.length,
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return SizedBox(
+          height: 320,
+          child: ArticleCard(
+            category: controller.category.value,
+            article: Articles.fromJson(controller.articles[index]),
+            isCompact: true,
+          ),
+        );
+      },
     ),
-    itemCount: controller.articles.length,
-    padding: const EdgeInsets.all(8.0),
-    physics: const AlwaysScrollableScrollPhysics(),
-    itemBuilder: (context, index) {
-      return SizedBox(
-        height: 320, // Match mainAxisExtent
-        child: ArticleCard(
-          category: controller.category.value,
-          article: Articles.fromJson(controller.articles[index]),
-          isCompact: true,
-        ),
-      );
-    },
   );
 }
