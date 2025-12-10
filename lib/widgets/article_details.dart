@@ -10,7 +10,7 @@ import 'package:shimmer/shimmer.dart';
 class ArticleDetails extends StatefulWidget {
   const ArticleDetails({super.key, required this.article});
 
-  final Articles article;
+  final Article article;
 
   @override
   State<ArticleDetails> createState() => _ArticleDetailsState();
@@ -85,7 +85,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
     );
   }
 
-  Widget _buildImageSection(Articles article) {
+  Widget _buildImageSection(Article article) {
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: ClipRRect(
@@ -117,7 +117,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
     );
   }
 
-  Widget _buildArticleMetadata(BuildContext context, Articles article) {
+  Widget _buildArticleMetadata(BuildContext context, Article article) {
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
@@ -155,7 +155,7 @@ class _ArticleDetailsState extends State<ArticleDetails> {
             if (article.publishedAt != null)
               Text(
                 app_date_utils.DateUtils.formatPublishedDate(
-                  article.publishedAt,
+                  article.publishedAt.toString(),
                 ),
                 style: textTheme.bodySmall?.copyWith(
                   color: Theme.of(

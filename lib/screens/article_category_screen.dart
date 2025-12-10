@@ -157,7 +157,7 @@ Widget _buildListView(BuildContext context, NewController controller) {
       itemBuilder: (context, index) {
         return ArticleCard(
           category: controller.category.value,
-          article: Articles.fromJson(controller.articles[index]),
+          article: Article.fromJson(controller.articles[index], controller.category.value),
           isCompact: false,
         );
       },
@@ -190,7 +190,7 @@ Widget _buildGridView(
           height: 320,
           child: ArticleCard(
             category: controller.category.value,
-            article: Articles.fromJson(controller.articles[index]),
+            article: Article.fromJson(controller.articles[index], controller.category.value),
             isCompact: true,
           ),
         );

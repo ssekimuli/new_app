@@ -4,7 +4,7 @@ import 'package:new_app/utils/date_utils.dart' as app_date_utils;
 import 'package:new_app/widgets/article_details.dart';
 
 class ArticleCard extends StatelessWidget {
-  final Articles article;
+  final Article article;
   final String category;
   final bool isCompact;
   final double fontSizeFactor;
@@ -99,7 +99,7 @@ class ArticleCard extends StatelessWidget {
 
                   // Subtitle/Description
                   Text(
-                    article.description,
+                    article.description ?? 'No description available',
                     style: TextStyle(
                       fontSize: 12 * fontSizeFactor,
                       color: Colors.grey,
@@ -117,7 +117,7 @@ class ArticleCard extends StatelessWidget {
                     children: [
                       // Source/Time
                       Text(
-                        '${article.source} • ${app_date_utils.DateUtils.formatPublishedDate(article.publishedAt)}',
+                        '${article.source} • ${app_date_utils.DateUtils.formatPublishedDate(article.publishedAt.toString())}',
                         style: TextStyle(
                           fontSize: 12 * fontSizeFactor,
                           color: Colors.grey,

@@ -145,7 +145,7 @@ class _SearchResultsState extends State<SearchResults> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ArticleDetails(
-                    article: Articles.fromJson(_results[index]),
+                    article: Article.fromJson(_results[index], 'search'),
                   ),
                 ),
               );
