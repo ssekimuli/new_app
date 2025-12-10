@@ -79,55 +79,86 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       backgroundColor: const Color.fromARGB(255, 245, 244, 244),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
-          child: Column(
-            children: [
-              Container(
-                color: const Color.fromARGB(255, 194, 49, 49),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 2.0,
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
+        child: Column(
+          children: [
+            Container(
+              color: const Color.fromARGB(255, 194, 49, 49),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+                vertical: 2.0,
+              ),
+              child: Container(
+                height: 45,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF990101).withOpacity(0.3),
+                      const Color(0xFF990101).withOpacity(0.1),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
                     fillColor: Colors.white,
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: const Color.fromARGB(
-                        255,
-                        153,
-                        1,
-                        1,
-                      ).withOpacity(0.64),
-                    ),
-                    hintText: "Search",
-                    hintStyle: TextStyle(
-                      color: const Color(0xFF1D1D35).withOpacity(0.64),
-                    ),
                     filled: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0 * 1.5,
-                      vertical: 16.0,
+                    prefixIcon: Container(
+                      margin: const EdgeInsets.only(left: 8),
+                      child: Icon(
+                        Icons.search_rounded,
+                        color: const Color(0xFF990101).withOpacity(0.64),
+                      ),
                     ),
-                    border: const OutlineInputBorder(
+                    suffixIcon: _searchController.text.isNotEmpty
+                        ? GestureDetector(
+                            onTap: () => _searchController.clear(),
+                            child: Icon(
+                              Icons.cancel_rounded,
+                              color: const Color(0xFF990101).withOpacity(0.5),
+                              size: 20,
+                            ),
+                          )
+                        : null,
+                    hintText: "Search news, topics...",
+                    hintStyle: TextStyle(
+                      color: const Color(0xFF1D1D35).withOpacity(0.5),
+                      fontSize: 14,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                    border: OutlineInputBorder(
                       borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      borderRadius: BorderRadius.circular(30),
                     ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: const Color(0xFF990101),
+                        width: 1.5,
+                      ),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  style: const TextStyle(
+                    color: Color(0xFF1D1D35),
+                    fontSize: 14,
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+            ),
 
-              isSearching
-                  ? Expanded(
-                      child: SearchResults(searchQuery: _searchController.text),
-                    )
-                  : Expanded(child: ArticleCategoryScreen()),
-            ],
-          ),
+            // const SizedBox(height: 2),
+            isSearching
+                ? Expanded(
+                    child: SearchResults(searchQuery: _searchController.text),
+                  )
+                : Expanded(child: ArticleCategoryScreen()),
+          ],
         ),
       ),
     );

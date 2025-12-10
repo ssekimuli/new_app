@@ -47,6 +47,7 @@ class NewController extends GetxController {
 
   Future<void> refreshArticles() async {
     fetchArticles(category.value);
+    // print('Articles refreshed for category: ${category.value}');
   }
 
   Future<void> searchArticles(String query) async {

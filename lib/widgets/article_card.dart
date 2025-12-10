@@ -6,11 +6,15 @@ import 'package:new_app/widgets/article_details.dart';
 class ArticleCard extends StatelessWidget {
   final Articles article;
   final String category;
+  final bool isCompact;
+  final double fontSizeFactor;
 
   const ArticleCard({
     super.key,
     required this.article,
-    required  this.category,
+    required this.category,
+    required this.isCompact,
+    this.fontSizeFactor = 1.0,
   });
 
   @override
@@ -37,12 +41,37 @@ class ArticleCard extends StatelessWidget {
                 topLeft: Radius.circular(6),
                 topRight: Radius.circular(6),
               ),
-              child: Image.network(
-                article.urlToImage,
-                width: double.infinity,
-                height: 180,
-                fit: BoxFit.cover,
-              ),
+              child: article.urlToImage == null || article.urlToImage!.isEmpty
+                  ? Container(
+                      width: double.infinity,
+                      height: 180,
+                      color: Colors.grey[200],
+                      child: const Center(
+                        child: Icon(
+                          Icons.newspaper,
+                          color: Colors.grey,
+                          size: 60,
+                        ),
+                      ),
+                    )
+                  : Image.network(
+                      article.urlToImage!,
+                      width: double.infinity,
+                      height: 180,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey[200],
+                          child: const Center(
+                            child: Icon(
+                              Icons.article,
+                              color: Colors.grey,
+                              size: 60,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
             ),
 
             // Content section
@@ -51,33 +80,13 @@ class ArticleCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Category/Tag
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      article.category,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 4),
 
                   // Title
                   Text(
                     article.title,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 13 * fontSizeFactor,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                       height: 1.3,
@@ -86,21 +95,21 @@ class ArticleCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 5),
 
                   // Subtitle/Description
                   Text(
                     article.description,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 12 * fontSizeFactor,
                       color: Colors.grey,
-                      height: 1.5,
+                      height: 1.5 * fontSizeFactor,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
 
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 4),
 
                   // Footer with metadata
                   Row(
@@ -109,30 +118,11 @@ class ArticleCard extends StatelessWidget {
                       // Source/Time
                       Text(
                         '${article.source} • ${app_date_utils.DateUtils.formatPublishedDate(article.publishedAt)}',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(
+                          fontSize: 12 * fontSizeFactor,
+                          color: Colors.grey,
+                        ),
                       ),
-
-                      // Action button
-                      // ElevatedButton(
-                      //   onPressed: () {},
-                      //   style: ElevatedButton.styleFrom(
-                      //     padding: const EdgeInsets.symmetric(
-                      //       horizontal: 16,
-                      //       vertical: 8,
-                      //     ),
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(20),
-                      //     ),
-                      //   ),
-                      //   child: const Row(
-                      //     mainAxisSize: MainAxisSize.min,
-                      //     children: [
-                      //       Icon(Icons.play_arrow, size: 16),
-                      //       SizedBox(width: 4),
-                      //       Text('Watch'),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 ],
