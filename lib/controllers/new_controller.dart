@@ -122,7 +122,6 @@ class NewController extends GetxController {
         }
       }
 
-      // Show snackbar only for online errors with no cached fallback
       if (isOnline.value && !usingCachedData.value) {
         Get.snackbar(
           'Error',
